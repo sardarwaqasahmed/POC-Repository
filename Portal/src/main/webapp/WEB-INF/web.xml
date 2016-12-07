@@ -1,0 +1,53 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+	<display-name>Sample Web Service</display-name>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>WEB-INF/classes/cxf.xml</param-value>
+	</context-param>
+
+
+
+	<filter>
+		<filter-name>requestFilter</filter-name>
+		<filter-class>org.local.filters.RequestFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>requestFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<filter>
+		<filter-name>validationFilter</filter-name>
+		<filter-class>org.local.filters.ValidationFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>validationFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+<!-- 	<listener> -->
+<!-- 	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class> -->
+<!-- 	</listener> -->
+
+
+	<listener>
+		<listener-class>org.context.ServletContextListner</listener-class>
+	</listener>
+
+	<servlet>
+		<servlet-name>CXFServlet</servlet-name>
+		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>CXFServlet</servlet-name>
+		<url-pattern>/api/*</url-pattern>
+	</servlet-mapping>
+
+
+</web-app>

@@ -1,0 +1,132 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                                        http://cxf.apache.org/jaxws
+                                        http://cxf.apache.org/schemas/jaxws.xsd
+                                        http://cxf.apache.org/jaxrs
+                                        http://cxf.apache.org/schemas/jaxrs.xsd
+                                        http://www.springframework.org/schema/util
+                                        http://www.springframework.org/schema/util/spring-util.xsd">
+
+
+
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location">
+			<value>classpath:Portal.properties</value>
+		</property>
+	</bean>
+
+	<bean id="log4jInitializer"
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod">
+			<value>org.springframework.util.Log4jConfigurer.initLogging</value>
+		</property>
+		<property name="arguments">
+			<list>
+				<value>classpath:Portal.properties</value>
+			</list>
+		</property>
+	</bean>
+
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+
+		<property name="mappingResources">
+			<list>
+				<value>User.hbm.xml</value>
+			</list>
+		</property>
+
+	</bean>
+
+	<bean id="userDao" class="org.dao.impl.UserDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<!-- User business object -->
+	<bean id="userBo" class="org.userBO.impl.UserBOImpl">
+		<property name="userDao1" ref="userDao" />
+	</bean>
+
+	<bean id="jsonProvider" class="org.apache.cxf.jaxrs.provider.json.JSONProvider" />
+
+
+	<bean id="sampleSoapImpl" class="org.local.service.impl.SampleServiceImpl" />
+
+	<jaxws:endpoint implementor="org.local.service.impl.SampleServiceImpl"
+		address="/sample/soap">
+	</jaxws:endpoint>
+
+	<bean id="sampleJsonImpl" class="org.local.service.impl.rest.SampleServiceJSONImpl">
+		<property name="sampleService" ref="sampleSoapImpl" />
+	</bean>
+
+
+	<bean id="authJasonImpl" class="org.local.service.impl.rest.AuthServiceJasonImpl">
+	</bean>
+
+	<bean id="HelloBean" class="org.local.service.impl.rest.HelloServiceImpl">
+
+	</bean>
+
+	<bean id="AuthBean" class="org.local.service.impl.rest.AuthService">
+
+	</bean>
+
+
+
+	<jaxrs:server address="/sample/json">
+		<jaxrs:serviceBeans>
+			<ref bean="sampleJsonImpl" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<ref bean="jsonProvider" />
+		</jaxrs:providers>
+	</jaxrs:server>
+
+	<jaxrs:server address="/auth/jason">
+		<jaxrs:serviceBeans>
+			<ref bean="authJasonImpl" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<ref bean="jsonProvider"/>
+		</jaxrs:providers>
+	</jaxrs:server>
+
+	<jaxrs:server address="/HelloService">
+		<jaxrs:serviceBeans>
+			<ref bean="HelloBean" />
+		</jaxrs:serviceBeans>
+	</jaxrs:server>
+
+	<jaxrs:server address="/AuthService">
+		<jaxrs:serviceBeans>
+			<ref bean="AuthBean" />
+		</jaxrs:serviceBeans>
+	</jaxrs:server>
+
+</beans>
