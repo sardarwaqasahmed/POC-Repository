@@ -1,0 +1,2 @@
+-- transaction_master
+insert into transaction_master(id,name_first,name_last,email_address,phone_no,item_name,item_desc,amount,currency,payment_method,pf_payment_id,trn_status, created_by, created_date, updated_by, updated_date) values (transaction_sequence.nextval,'waqas','ahmed','waqasahmed@gmail.com','971529386227','Basic Plan', 'Basic plan with unlimited issuance and 2 custom template',9,'ZAD','CC', '', 'NEW', 'SYSTEM', LOCALTIMESTAMP, 'SYSTEM',LOCALTIMESTAMP);
