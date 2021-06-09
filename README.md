@@ -14,3 +14,6 @@ All POC projects related to different technologies and paltform integration
 ```diff
 + This project is a POC with spring boot + spring MVC controller + spring REST  Controller + Localization + freemarker template.
 `````
+## Payfast-PaymentGateway-Integration
+```diff
++ Payfast is spring boot POC project that integrate payfast as payment gateway. Payfast sandbox is used as payment gateway. For detail please check project README.md
