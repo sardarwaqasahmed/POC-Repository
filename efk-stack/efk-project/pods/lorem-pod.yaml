@@ -1,0 +1,34 @@
+#Create Pod named lorem-poc in namespace kube-logging
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # Name your Deployment here
+  name: lorem-dep
+  namespace: kube-logging
+  # label your deployment
+  labels:
+    app: lorem-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+    # selector to match the pod
+      app: lorem-app
+  template:
+    metadata:
+      labels:
+      # label your pod
+        app: lorem-app
+    spec:
+      containers:
+      - name: lorem-poc-container
+        image: sajjadqureshi1988/zenith-repo:latest
+        # always pull the image policy
+        imagePullPolicy: Always        
+        resources:
+          limits:
+            cpu: 1000m
+          requests:
+            cpu: 100m        
+        ports:
+        - containerPort: 8080

@@ -1,0 +1,20 @@
+#Create Service named lorem-service in namespace kube-logging
+apiVersion: v1
+kind: Service
+metadata:
+  name: lorem-svc
+  namespace: kube-logging
+spec:
+  selector:
+    # selector that matches the pod
+    app: lorem-app
+  # type of service
+  type: NodePort     
+  ports:
+  - protocol: TCP 
+    # port for exposing the service        
+    port: 8080
+    # portfor exposing the pod             
+    targetPort: 8080
+    # port for exposing the node       
+    nodePort: 30035
