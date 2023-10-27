@@ -22,3 +22,8 @@ All POC projects related to different technologies and paltform integration
 ## Redis-Distributed-Lock
 ```diff
 + Redis distributed lock POC for handling parallel access on shared data from multiple nodes or cluster.
+
+````
+## EFK Stack On K8s
+```diff
++ EFK stack on kubernetes cluster using Elasticsearch, FluentD, Kibana etc
